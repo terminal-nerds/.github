@@ -1,12 +1,13 @@
-## Hi there 👋
+# Terminal Nerds
 
-<!--
+🤓 We are people who are passionate about using CLI or TUI tools.
 
-**Here are some ideas to get you started:**
+## Community
 
-🙋‍♀️ A short introduction - what is your organization all about?
-🌈 Contribution guidelines - how can the community get involved?
-👩‍💻 Useful resources - where can the community find your docs? Is there anything else the community should know?
-🍿 Fun facts - what does your team eat for breakfast?
-🧙 Remember, you can do mighty things with the power of [Markdown](https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
--->
+[![discord badge]][discord server]
+
+✉️ **The best way to get in touch with us or join us is using our [Discord server]**.
+Anyone is welcome to hop in for a chat. 🙂
+
+[discord server]: https://discord.gg/decp3g7BEN
+[discord badge]: https://img.shields.io/discord/862890839537877012?label=Discord&logo=discord&style=for-the-badge
