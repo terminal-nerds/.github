@@ -25,10 +25,12 @@ We all want to feel safe on the internet. As well as have our privacy respected.
 
 📟 If you have found a security issue or have any concerns or doubts regarding
 privacy rights, please get in touch with us.\
-There are two ways:
+There are possible options:
 
+1. Create GitHub's **Security Advisory** in the specific repository where the
+   security issue exists _(in the `Security` tab/pane)_.
 1. Traditionally, via email: terminal-nerds@pm.me.
-2. Reach out to one of the `Project Managers` on our [Discord server].
+1. Reach out to one of the `Project Managers` on our [Discord server].
 
 ⚠️ We are all ears, but please, **DO NOT create a GitHub issue for reporting a
 vulnerability**.
