@@ -1,5 +1,8 @@
 lockfileVersion: 5.3
 
+overrides:
+  markdown-it@<12.3.2: '>=12.3.2'
+
 specifiers:
   '@terminal-nerds/eslint-config': ^0.1.1
   '@terminal-nerds/markdownlint-config': ^0.1.1
@@ -1521,8 +1524,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /markdown-it/12.2.0:
-    resolution: {integrity: sha512-Wjws+uCrVQRqOoJvze4HCqkKl1AsSh95iFAeQDwnyfxM09divCBSXlDR1uTvyUP3Grzpn4Ru8GeCxYPM8vkCQg==}
+  /markdown-it/12.3.2:
+    resolution: {integrity: sha512-TchMembfxfNVpHkbtriWltGWc+m3xszaRD0CZup7GFFhzIgQqxIfn3eGj1yZpfuflzPvfkt611B2Q/Bsk1YnGg==}
     hasBin: true
     dependencies:
       argparse: 2.0.1
@@ -1561,7 +1564,7 @@ packages:
     resolution: {integrity: sha512-OJIGsGFV/rC9irI5E1FMy6v9hdACSwaa+EN3224Y5KG8zj2EYzdHOw0pOJovIYmjNfEZ9BtxUY4P7uYHTSNnbQ==}
     engines: {node: '>=10'}
     dependencies:
-      markdown-it: 12.2.0
+      markdown-it: 12.3.2
     dev: true
 
   /mdurl/1.0.1:
