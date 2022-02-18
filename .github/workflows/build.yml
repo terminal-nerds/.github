@@ -30,8 +30,8 @@ on:
                 type: string
 
 jobs:
-    build_and_upload:
-        name: Upload artifact
+    build_job:
+        name: Build job
         runs-on: ubuntu-latest
         steps:
             - name: Checkout to ${{ github.repository }} repository
