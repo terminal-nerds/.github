@@ -12,10 +12,18 @@ env:
 on:
     workflow_call:
         inputs:
+            download-packages:
+                description: Built packages from the workflow artifacts
+                required: false
+                type: boolean
+
             step-name:
+                description: Name of the step for better log display
                 required: true
                 type: string
+
             run:
+                description: Command to execute
                 required: true
                 type: string
 
@@ -46,6 +54,15 @@ jobs:
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
+
+            - name: Download built packages
+              if: ${{ inputs.download-packages }}
+              # https://github.com/actions/download-artifact
+              uses: actions/download-artifact@v2
+
+            - name: Extract built packages
+              if: ${{ inputs.download-packages }}
+              run: ./.github/scripts/extract-built-packages.sh
 
             - name: ${{ inputs.step-name }}
               run: ${{ inputs.run }}

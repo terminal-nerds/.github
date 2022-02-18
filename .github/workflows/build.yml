@@ -12,19 +12,26 @@ env:
 on:
     workflow_call:
         inputs:
-            artifacts-name:
+            artifact-name:
+                description: Name of the compressed artifact file
                 required: true
                 type: string
-            artifacts-path:
+            artifact-path:
+                description: Path pattern to include in upload
                 required: true
                 type: string
+            artifact-upload:
+                description: Include uploading artifact step
+                required: false
+                type: boolean
+
             run:
                 required: true
                 type: string
 
 jobs:
     build_and_upload:
-        name: ""
+        name: Upload artifact
         runs-on: ubuntu-latest
         steps:
             - name: Checkout to ${{ github.repository }} repository
@@ -54,11 +61,12 @@ jobs:
               run: ${{ inputs.run }}
 
             - name: Upload built output to GitHub Actions workflow artifacts
+              if: ${{ inputs.upload-artifact }}
               # https://github.com/actions/upload-artifact
               uses: actions/upload-artifact@v2
               with:
                   if-no-files-found: error
-                  name: ${{ inputs.artifacts-name }}
-                  path: ${{ inputs.artifacts-path }}
+                  name: ${{ inputs.artifact-name }}
+                  path: ${{ inputs.artifact-path }}
         timeout-minutes: 5
 
