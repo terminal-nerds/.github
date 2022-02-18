@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+---
+name: GitGuardian scan
+
+defaults:
+    run:
+        shell: bash
+
+env:
+    CI: true
+
+on:
+    workflow_call:
+        inputs:
+            artifact-name:
+                description: Name of the compressed artifact file
+                required: true
+                type: string
+            artifact-path:
+                description: Path pattern to include in upload
+                required: true
+                type: string
+            artifact-upload:
+                description: Include uploading artifact step
+                required: false
+                type: boolean
+
+            run:
+                required: true
+                type: string
+
+jobs:
+    git-guardian:
+        name: GitGuardian scan
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout to ${{ github.repository }} repository
+              # https://github.com/actions/checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.head_ref }}
+
+            - name: Scan the codebase with GitGuardian
+              # https://github.com/GitGuardian/ggshield-action
+              uses: GitGuardian/gg-shield-action@master
+              env:
+                  GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
+                  GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
+                  GITHUB_PULL_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+                  GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+                  GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+              with:
+                  args: --all-policies --verbose
