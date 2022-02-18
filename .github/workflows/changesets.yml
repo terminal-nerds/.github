@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+---
+name: Changesets
+
+defaults:
+    run:
+        shell: bash
+
+env:
+    CI: true
+
+on:
+    workflow_call:
+        inputs:
+            extract-script:
+                description: Path to the script file for output extraction task
+                required: true
+                type: string
+
+            changelogs-path:
+                description: Changelogs path pattern for fixing code format
+                required: true
+                type: string
+
+jobs:
+    changesets:
+        name: Changesets
+        if: ${{
+            github.ref_name == 'main' &&
+            github.repository_owner == 'terminal-nerds'
+            }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout to ${{ github.repository }} repository
+              # https://github.com/actions/checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.head_ref }}
+
+            - name: Setup the latest pnpm version
+              # https://github.com/pnpm/action-setup
+              uses: pnpm/action-setup@v2.1.0
+              with:
+                  version: latest
+
+            - name: Setup the latest Node.js LTS version
+              # https://github.com/actions/setup-node
+              uses: actions/setup-node@v2
+              with:
+                  cache: pnpm
+                  node-version: lts/*
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Download built output
+              # https://github.com/actions/download-artifact
+              uses: actions/download-artifact@v2
+
+            - name: Extract built output
+              run: ${{ inputs.extract-script }}
+
+            - name: Create changelogs, release, publish with Changesets
+              id: changesets
+              # https://github.com/changesets/action
+              uses: changesets/action@v1
+              with:
+                  commit: "chore(Changesets): 🏷️ Versioning package(s)"
+                  publish: pnpm changeset publish
+                  title: "chore(Changesets): 🎉 Release package(s)"
+
+            - name: Execute Prettier to fix CHANGELOG(s) file(s) format
+              run: >
+                  pnpm prettier ${{ inputs.changelogs-path }}
+                  --write
+        timeout-minutes: 5
