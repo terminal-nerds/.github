@@ -22,7 +22,7 @@ on:
 jobs:
     nodejs_job:
         name: Node.js job
-        runs-on: ${{ matrix.os }}
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout to ${{ github.repository }} repository
               # https://github.com/actions/checkout
@@ -31,28 +31,22 @@ jobs:
                   fetch-depth: 0
                   ref: ${{ github.head_ref }}
 
-            - name: Use pnpm version ${{ matrix.pnpm-version }}
+            - name: Setup the latest pnpm version
               # https://github.com/pnpm/action-setup
               uses: pnpm/action-setup@v2.1.0
               with:
-                  version: ${{ matrix.pnpm-version }}
+                  version: latest
 
-            - name: Setup Node.js version ${{ matrix.node-version }}
+            - name: Setup Node.js LTS version
               # https://github.com/actions/setup-node
               uses: actions/setup-node@v2
               with:
-                  cache: "pnpm"
-                  node-version: ${{ matrix.node-version }}
+                  cache: pnpm
+                  node-version: lts/*
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
             - name: ${{ inputs.step-name }}
               run: ${{ inputs.run }}
-
-        strategy:
-            matrix:
-                node-version: ["lts/*"]
-                os: ["ubuntu-latest"]
-                pnpm-version: ["latest"]
         timeout-minutes: 5
