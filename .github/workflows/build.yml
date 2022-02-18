@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 ---
-name: Node.js job
+name: Build & Upload artifacts
 
 defaults:
     run:
@@ -12,7 +12,10 @@ env:
 on:
     workflow_call:
         inputs:
-            step-name:
+            artifacts-name:
+                required: true
+                type: string
+            artifacts-path:
                 required: true
                 type: string
             run:
@@ -20,8 +23,8 @@ on:
                 type: string
 
 jobs:
-    nodejs_job:
-        name: Node.js job
+    build_and_upload:
+        name: ""
         runs-on: ubuntu-latest
         steps:
             - name: Checkout to ${{ github.repository }} repository
@@ -47,6 +50,15 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: ${{ inputs.step-name }}
+            - name: Execute build task
               run: ${{ inputs.run }}
+
+            - name: Upload built output to GitHub Actions workflow artifacts
+              # https://github.com/actions/upload-artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  if-no-files-found: error
+                  name: ${{ inputs.artifacts-name }}
+                  path: ${{ inputs.artifacts-path }}
         timeout-minutes: 5
+
