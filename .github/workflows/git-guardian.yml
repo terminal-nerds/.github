@@ -1,6 +1,13 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 ---
-name: GitGuardian scan
+name: GitGuardian
+
+on:
+    workflow_call:
+        secrets:
+            GITGUARDIAN_API_KEY:
+                description: Token
+                required: true
 
 defaults:
     run:
@@ -9,29 +16,9 @@ defaults:
 env:
     CI: true
 
-on:
-    workflow_call:
-        inputs:
-            artifact-name:
-                description: Name of the compressed artifact file
-                required: true
-                type: string
-            artifact-path:
-                description: Path pattern to include in upload
-                required: true
-                type: string
-            artifact-upload:
-                description: Include uploading artifact step
-                required: false
-                type: boolean
-
-            run:
-                required: true
-                type: string
-
 jobs:
     git-guardian:
-        name: GitGuardian scan
+        name: GitGuardian
         runs-on: ubuntu-latest
         steps:
             - name: Checkout to ${{ github.repository }} repository
@@ -51,4 +38,6 @@ jobs:
                   GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
                   GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
               with:
-                  args: --all-policies --verbose
+                  args: >
+                    --all-policies
+                    --verbose
