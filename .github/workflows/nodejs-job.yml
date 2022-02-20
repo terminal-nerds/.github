@@ -61,12 +61,12 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - run: ls -alt
-
             - name: Download built output
               if: ${{ inputs.download-build }}
               # https://github.com/actions/download-artifact
               uses: actions/download-artifact@v2
+
+            - run: ls -alt && ls ./node_modules/.cache -alt
 
             - name: Extract built output
               if: ${{ inputs.download-build }}
