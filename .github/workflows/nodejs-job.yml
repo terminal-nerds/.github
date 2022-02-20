@@ -19,10 +19,10 @@ on:
                 description: Download built output from the workflow artifacts
                 required: false
                 type: boolean
-            extract-script:
-                description: Path to the script file for output extraction task
-                required: false
-                type: string
+            # extract-script:
+            #     description: Path to the script file for output extraction task
+            #     required: false
+            #     type: string
 
             step-name:
                 description: Name of the step for better log display
@@ -61,6 +61,8 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
+            - run: ls -alt
+
             - name: Download built output
               if: ${{ inputs.download-build }}
               # https://github.com/actions/download-artifact
@@ -68,7 +70,7 @@ jobs:
 
             - name: Extract built output
               if: ${{ inputs.download-build }}
-              run: ${{ inputs.extract-script }}
+              run: ./.github/scripts/extract-built-packages.sh
 
             - name: ${{ inputs.step-name }}
               run: ${{ inputs.run }}

@@ -15,11 +15,10 @@ env:
 on:
     workflow_call:
         inputs:
-            extract-script:
-                description: Path to the script file for output extraction task
-                required: true
-                type: string
-
+            # extract-script:
+            #     description: Path to the script file for output extraction task
+            #     required: true
+            #     type: string
             changelogs-path:
                 description: Changelogs path pattern for fixing code format
                 required: true
@@ -62,7 +61,7 @@ jobs:
               uses: actions/download-artifact@v2
 
             - name: Extract built output
-              run: ${{ inputs.extract-script }}
+              run: ./.github/scripts/extract-built-packages.sh
 
             - name: Create changelogs, release, publish with Changesets
               id: changesets
