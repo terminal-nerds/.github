@@ -2,6 +2,24 @@
 ---
 name: Node.js job
 
+on:
+    workflow_call:
+        inputs:
+            download-build:
+                description: Download built output from the workflow artifacts
+                required: false
+                type: boolean
+
+            step-name:
+                description: Name of the step for better log display
+                required: true
+                type: string
+
+            run:
+                description: Command to execute
+                required: true
+                type: string
+
 defaults:
     run:
         shell: bash
@@ -11,27 +29,6 @@ env:
     # Prevent possible memory leaks by setting limit
     # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
     NODE_OPTIONS: --max-old-space-size=6144
-
-on:
-    workflow_call:
-        inputs:
-            download-build:
-                description: Download built output from the workflow artifacts
-                required: false
-                type: boolean
-            # extract-script:
-            #     description: Path to the script file for output extraction task
-            #     required: false
-            #     type: string
-
-            step-name:
-                description: Name of the step for better log display
-                required: true
-                type: string
-            run:
-                description: Command to execute
-                required: true
-                type: string
 
 jobs:
     nodejs_job:
@@ -59,17 +56,17 @@ jobs:
                   node-version: lts/*
 
             - name: Install dependencies
+              # https://pnpm.io/cli/install
               run: pnpm install --frozen-lockfile
 
             - name: Download built output
-              if: ${{ inputs.download-build }}
               # https://github.com/actions/download-artifact
               uses: actions/download-artifact@v2
-
-            - run: ls -alt && ls ./node_modules/.cache -alt
+              if: ${{ inputs.download-build }}
 
             - name: Extract built output
               if: ${{ inputs.download-build }}
+              # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-built-packages.sh
               run: ./.github/scripts/extract-built-packages.sh
 
             - name: ${{ inputs.step-name }}
