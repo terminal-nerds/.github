@@ -28,8 +28,9 @@ jobs:
               with:
                   # https://docs.snyk.io/features/snyk-cli/cli-reference
                   args: >
-                      --severity-threshold=high
+                      --all-projects
                       --sarif-file-output=snyk.sarif
+                      --severity-threshold=high
 
             - name: Upload result to GitHub Code Scanning
               # https://github.com/github/codeql-action/

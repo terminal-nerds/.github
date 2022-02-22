@@ -58,18 +58,18 @@ jobs:
                   node-version: lts/*
 
             - name: Install dependencies
+              # https://pnpm.io/cli/install
               run: pnpm install --frozen-lockfile
 
             - name: Execute build task
               run: ${{ inputs.run }}
 
             - name: Upload built output to GitHub Actions workflow artifacts
-              if: ${{ inputs.artifact-upload }}
               # https://github.com/actions/upload-artifact
               uses: actions/upload-artifact@v2
+              if: ${{ inputs.artifact-upload }}
               with:
                   if-no-files-found: error
                   name: ${{ inputs.artifact-name }}
                   path: ${{ inputs.artifact-path }}
         timeout-minutes: 5
-

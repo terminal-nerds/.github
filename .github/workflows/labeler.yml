@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+---
+name: Labeler
+
+on:
+    workflow_call:
+        inputs:
+            token:
+                required: true
+                type: string
+            event:
+                required: true
+                type: string
+
+defaults:
+    run:
+        shell: bash
+
+env:
+    CI: true
+
+jobs:
+    labeler:
+        name: Labeler
+        if: ${{ github.repository_owner == 'terminal-nerds' }}
+        runs-on: ubuntu-latest
+        steps:
+            # https://github.com/actions/labeler
+            - uses: actions/labeler@v3
+              with:
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
+                  sync-labels: true
+        timeout-minutes: 3
