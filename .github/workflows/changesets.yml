@@ -2,27 +2,29 @@
 ---
 name: Changesets
 
+on:
+    workflow_call:
+        inputs:
+            changelogs-path:
+                description: Changelogs path pattern for fixing code format
+                required: true
+                type: string
+        secrets:
+            NPM_TOKEN:
+                description: Token for npmjs.com registry publishing
+                required: true
+
 defaults:
     run:
         shell: bash
 
 env:
     CI: true
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # Prevent possible memory leaks by setting limit
     # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
     NODE_OPTIONS: --max-old-space-size=6144
-
-on:
-    workflow_call:
-        inputs:
-            # extract-script:
-            #     description: Path to the script file for output extraction task
-            #     required: true
-            #     type: string
-            changelogs-path:
-                description: Changelogs path pattern for fixing code format
-                required: true
-                type: string
+    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 jobs:
     changesets:
@@ -54,6 +56,7 @@ jobs:
                   node-version: lts/*
 
             - name: Install dependencies
+              # https://pnpm.io/cli/install
               run: pnpm install --frozen-lockfile
 
             - name: Download built output
@@ -61,18 +64,20 @@ jobs:
               uses: actions/download-artifact@v2
 
             - name: Extract built output
+              # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-built-packages.sh
               run: ./.github/scripts/extract-built-packages.sh
 
             - name: Create changelogs, release, publish with Changesets
-              id: changesets
               # https://github.com/changesets/action
               uses: changesets/action@v1
+              id: changesets
               with:
                   commit: "chore(Changesets): 🏷️ Versioning package(s)"
                   publish: pnpm changeset publish
                   title: "chore(Changesets): 🎉 Release package(s)"
 
             - name: Execute Prettier to fix CHANGELOG(s) file(s) format
+              # https://prettier.io/docs/en/cli.html
               run: >
                   pnpm prettier ${{ inputs.changelogs-path }}
                   --write
