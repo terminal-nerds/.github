@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 ---
-name: Labeler
+name: Pull Request Labels
 
 on:
     workflow_call:
@@ -13,8 +13,8 @@ env:
     CI: true
 
 jobs:
-    labeler:
-        name: Labeler
+    pull-request-labels:
+        name: Set/Update Pull Requests labels
         if: ${{ github.repository_owner == 'terminal-nerds' }}
         runs-on: ubuntu-latest
         steps:
