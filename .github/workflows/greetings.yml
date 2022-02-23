@@ -15,6 +15,7 @@ env:
 jobs:
     greeting:
         name: Greet first time contributors
+        if: ${{ github.event_name == 'pull_request' }}
         runs-on: ubuntu-latest
         steps:
             - name: Read the markdown template

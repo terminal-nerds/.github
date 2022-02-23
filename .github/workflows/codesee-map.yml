@@ -24,6 +24,11 @@ env:
 jobs:
     test_map_action:
         name: CodeSee Map
+        if: ${{
+            github.event.action == 'synchronize' ||
+            github.event.action == 'opened' ||
+            github.event.action == 'reopened'
+            }}
         continue-on-error: true
         runs-on: ubuntu-latest
         steps:
