@@ -20,7 +20,7 @@ jobs:
         steps:
             - name: Read the markdown template
               # https://github.com/juliangruber/read-file-action
-              uses: juliangruber/read-file-action
+              uses: juliangruber/read-file-action@v1
               id: template
               with:
                   path: "./.github/templates/greetings.md"
