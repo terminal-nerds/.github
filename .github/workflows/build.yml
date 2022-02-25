@@ -28,8 +28,13 @@ on:
                 required: false
                 type: boolean
 
-            run:
+            script-build:
+                description: Executable command script to build the output
                 required: true
+                type: string
+            script-clean:
+                description: Executable command script to clean the output
+                required: false
                 type: string
 
 jobs:
@@ -61,8 +66,13 @@ jobs:
               # https://pnpm.io/cli/install
               run: pnpm install --frozen-lockfile
 
-            - name: Execute build task
-              run: ${{ inputs.run }}
+            - name: Execute build task with compression report
+              # https://github.com/preactjs/compressed-size-action
+              uses: preactjs/compressed-size-action@v2
+              with:
+                  build-script: ${{ inputs.script-build }}
+                  clean-script: ${{ inputs.script-clean }}
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Upload built output to GitHub Actions workflow artifacts
               # https://github.com/actions/upload-artifact
