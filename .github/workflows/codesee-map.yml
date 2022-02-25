@@ -46,6 +46,12 @@ jobs:
               uses: Codesee-io/codesee-detect-languages-action@latest
               id: detect-languages
 
+            - name: Setup the latest pnpm version
+              # https://github.com/pnpm/action-setup
+              uses: pnpm/action-setup@v2.1.0
+              with:
+                  version: latest
+
             - name: Setup the latest Node.js LTS version
               # https://github.com/actions/setup-node
               uses: actions/setup-node@v2
