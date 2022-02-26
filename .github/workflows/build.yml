@@ -28,6 +28,16 @@ on:
                 required: false
                 type: boolean
 
+            exclude:
+                description: Pattern of paths to exclude
+                default: "{**/*.map,**/node_modules/**}"
+                required: false
+                type: string
+            include:
+                description: Pattern of paths to include
+                required: true
+                type: string
+
             script-build:
                 description: Executable command script to build the output
                 required: true
@@ -72,6 +82,8 @@ jobs:
               with:
                   build-script: ${{ inputs.script-build }}
                   clean-script: ${{ inputs.script-clean }}
+                  exclude: ${{ inputs.exclude }}
+                  pattern: ${{ inputs.include }}
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Upload built output to GitHub Actions workflow artifacts
