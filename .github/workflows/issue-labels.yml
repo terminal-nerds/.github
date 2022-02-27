@@ -14,13 +14,13 @@ env:
 
 jobs:
     issue-labels:
-        name: Set/Update issue labels
+        name: Set/Update labels
+        if: ${{ github.event.issue.closed }}
         runs-on: ubuntu-latest
         steps:
             - name: Remove "🔰 good first issue" label when the issue is closed
               # https://actions-cool.github.io/issues-helper/en-US/base
               uses: actions-cool/issues-helper@v3
-              if: ${{ github.event.issue.closed }}
               with:
                   # https://actions-cool.github.io/issues-helper/en-US/base/#remove-labels
                   actions: "remove-labels"
