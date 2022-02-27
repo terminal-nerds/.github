@@ -42,10 +42,6 @@ on:
                 description: Executable command script to build the output
                 required: true
                 type: string
-            script-clean:
-                description: Executable command script to clean the output
-                required: false
-                type: string
 
 jobs:
     build_job:
@@ -77,7 +73,6 @@ jobs:
               uses: preactjs/compressed-size-action@v2
               with:
                   build-script: ${{ inputs.script-build }}
-                  clean-script: ${{ inputs.script-clean }}
                   exclude: ${{ inputs.exclude }}
                   pattern: ${{ inputs.include }}
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
