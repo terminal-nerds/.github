@@ -72,10 +72,6 @@ jobs:
                   cache: pnpm
                   node-version: lts/*
 
-            - name: Install dependencies
-              # https://pnpm.io/cli/install
-              run: pnpm install --frozen-lockfile
-
             - name: Execute build task with compression report
               # https://github.com/preactjs/compressed-size-action
               uses: preactjs/compressed-size-action@v2
