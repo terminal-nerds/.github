@@ -2,7 +2,7 @@
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"assigneesFromCodeOwners": true,
 	"baseBranches": ["main"],
-	"commitMessagePrefix": "chore: {{#if isPin}}📌{{else if isRollback}}⬇️{{else if isReplacement}}🏗️{{else if (or isMajor isPatch isSingleVersion)}}⬆️{{/if}} ",
+	"commitMessagePrefix": "chore(Renovate): {{#if isPin}}📌{{else if isRollback}}⬇️{{else if isReplacement}}🏗️{{else if (or isMajor isPatch isSingleVersion)}}⬆️{{/if}} ",
 	"commitMessageTopic": "dependency `{{depName}}`",
 	"commitMessageExtra": "to `v{{#if isMajor}}{{{newMajor}}}{{else}}{{#if isSingleVersion}}{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}`",
 	"dependencyDashboard": true,
