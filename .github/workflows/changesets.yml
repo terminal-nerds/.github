@@ -76,15 +76,18 @@ jobs:
                   publish: pnpm changeset publish
                   title: "chore(Changesets): 🎉 Release package(s)"
 
+            - name: Execute markdownlint to fix CHANGELOG(s) issues
+              # https://prettier.io/docs/en/cli.html
+              run: >
+                  pnpm markdownlint ${{ inputs.changelogs-path }}
+                  --fix
+
             - name: Execute Prettier to fix CHANGELOG(s) file(s) format
               # https://prettier.io/docs/en/cli.html
               run: >
                   pnpm prettier ${{ inputs.changelogs-path }}
                   --write
 
-            - name: Execute markdownlint to fix CHANGELOG(s) issues
-              # https://prettier.io/docs/en/cli.html
-              run: >
-                  pnpm markdownlint ${{ inputs.changelogs-path }}
-                  --fix
+            - name: Amend fixes to the last commit
+              run: git add . && git commit --amend --no-edit
         timeout-minutes: 5
