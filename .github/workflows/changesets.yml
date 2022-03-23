@@ -65,7 +65,9 @@ jobs:
 
             - name: Extract built output
               # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-built-packages.sh
-              run: curl https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-built-packages.sh | sh
+              run: >
+                  curl https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-built-packages.sh
+                  | sh
 
             - name: Create changelogs, release, publish with Changesets
               # https://github.com/changesets/action
@@ -75,10 +77,5 @@ jobs:
                   commit: "chore(Changesets): 🏷️ Versioning package(s)"
                   publish: pnpm changeset publish
                   title: "chore(Changesets): 🎉 Release package(s)"
-                  version: >
-                      pnpm changeset version &&
-                      pnpm markdownlint ${{ inputs.changelogs-path }} --fix &&
-                      pnpm prettier ${{ inputs.changelogs-path }} --write &&
-                      git add --all &&
-                      git commit --amend --no-edit
+                  version: pnpm changeset version
         timeout-minutes: 5
