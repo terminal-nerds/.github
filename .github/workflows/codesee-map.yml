@@ -48,17 +48,21 @@ jobs:
 
             - name: Setup the latest pnpm version
               # https://github.com/pnpm/action-setup
-              uses: pnpm/action-setup@v2.1.0
+              uses: pnpm/action-setup@v2
               with:
                   version: latest
 
             - name: Setup the latest Node.js LTS version
               # https://github.com/actions/setup-node
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3
               if: ${{ fromJSON(steps.detect-languages.outputs.languages).javascript }}
               with:
                   cache: pnpm
                   node-version: lts/*
+              env:
+                  FORCE_COLOR: 0
+              # FIXME: Workaround for this issue: https://github.com/actions/setup-node/issues/317
+              continue-on-error: true
 
             - name: Generate Map
               # https://github.com/Codesee-io/codesee-map-action

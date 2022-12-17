@@ -37,20 +37,20 @@ jobs:
         steps:
             - name: Checkout to ${{ github.repository }} repository
               # https://github.com/actions/checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
               with:
                   fetch-depth: 0
                   ref: ${{ github.head_ref }}
 
             - name: Setup the latest pnpm version
               # https://github.com/pnpm/action-setup
-              uses: pnpm/action-setup@v2.1.0
+              uses: pnpm/action-setup@v2
               with:
                   version: latest
 
             - name: Setup the latest Node.js LTS version
               # https://github.com/actions/setup-node
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3
               with:
                   cache: pnpm
                   node-version: lts/*
@@ -61,7 +61,7 @@ jobs:
 
             - name: Download built output
               # https://github.com/actions/download-artifact
-              uses: actions/download-artifact@v2
+              uses: actions/download-artifact@v3
 
             - name: Extract built output
               # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-built-packages.sh

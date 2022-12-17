@@ -16,7 +16,7 @@ jobs:
         steps:
             - name: Checkout repository
               # https://github.com/actions/checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Run Snyk to check for vulnerabilities
               # https://github.com/snyk/actions/tree/master/node

@@ -50,20 +50,20 @@ jobs:
         steps:
             - name: Checkout to ${{ github.repository }} repository
               # https://github.com/actions/checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
               with:
                   fetch-depth: 0
                   ref: ${{ github.head_ref }}
 
             - name: Setup the latest pnpm version
               # https://github.com/pnpm/action-setup
-              uses: pnpm/action-setup@v2.1.0
+              uses: pnpm/action-setup@v2
               with:
                   version: latest
 
             - name: Setup the latest Node.js LTS version
               # https://github.com/actions/setup-node
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3
               with:
                   cache: pnpm
                   node-version: lts/*
@@ -79,7 +79,7 @@ jobs:
 
             - name: Upload built output to GitHub Actions workflow artifacts
               # https://github.com/actions/upload-artifact
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v3
               if: ${{ inputs.artifact-upload }}
               with:
                   if-no-files-found: error
