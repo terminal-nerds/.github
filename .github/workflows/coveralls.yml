@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+---
+name: Coverall
+
+on:
+    workflow_call:
+        inputs:
+            script-coverage:
+                description: Executable command script to generate the tests coverage report
+                required: true
+                type: string
+
+defaults:
+    run:
+        shell: bash
+
+env:
+    CI: true
+
+jobs:
+    coverall:
+        name: Coverall
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout to ${{ github.repository }} repository
+              # https://github.com/actions/checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.head_ref }}
+
+            - name: Generate the LCOV tests coverage report with script
+              run: ${{ inputs.script-coverage }}
+
+            - name: Analyze the tests coverage report with Coveralls
+              # https://github.com/coverallsapp/github-action
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
