@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+---
+name: Test
+
+on:
+    workflow_call:
+        inputs:
+            script-test:
+                description: Executable command script to run tests
+                required: true
+                type: string
+            type-name:
+                description: Type of the tests (ie. unit)
+                required: false
+                type: string
+            with-coverage:
+                description: Run coverage analytics with Coveralls?
+                default: false
+                required: false
+                type: boolean
+
+defaults:
+    run:
+        shell: bash
+
+env:
+    CI: true
+
+jobs:
+    test:
+        name: Test / ${{ inputs.type-name }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout to ${{ github.repository }} repository
+              # https://github.com/actions/checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.head_ref }}
+
+            - name: Setup the latest pnpm version
+              # https://github.com/pnpm/action-setup
+              uses: pnpm/action-setup@v2
+              with:
+                  version: latest
+
+            - name: Setup the latest Node.js LTS version
+              # https://github.com/actions/setup-node
+              uses: actions/setup-node@v3
+              with:
+                  cache: pnpm
+                  node-version: lts/*
+
+            - name: Install dependencies
+              # https://pnpm.io/cli/install
+              run: pnpm install --frozen-lockfile
+
+            - name: Execute the script for the tests
+              run: ${{ inputs.script-test }}
+
+            - name: Analyze the tests coverage report with Coveralls
+              if: inputs.with-coverage
+              # https://github.com/coverallsapp/github-action
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
