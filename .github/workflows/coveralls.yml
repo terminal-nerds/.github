@@ -42,6 +42,10 @@ jobs:
                   cache: pnpm
                   node-version: lts/*
 
+            - name: Install dependencies
+              # https://pnpm.io/cli/install
+              run: pnpm install --frozen-lockfile
+
             - name: Generate the LCOV tests coverage report with script
               run: ${{ inputs.script-coverage }}
 
