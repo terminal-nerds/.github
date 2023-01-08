@@ -1,6 +1,6 @@
 #!/bin/bash
 
-readonly ARTIFACT_DIRECTORY="built-packages"
+readonly ARTIFACT_DIRECTORY="build-output"
 readonly TEMPORARY_DIRECTORY=".temporary"
 readonly OUTPUT_DIRECTORY="packages"
 readonly WRAPPED_DIRECTORY="packed"

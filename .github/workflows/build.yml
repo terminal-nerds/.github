@@ -15,10 +15,6 @@ env:
 on:
     workflow_call:
         inputs:
-            artifact-name:
-                description: Name of the compressed artifact file
-                required: true
-                type: string
             artifact-path:
                 description: Path pattern to include in upload
                 required: true
@@ -88,5 +84,5 @@ jobs:
               if: ${{ inputs.artifact-upload }}
               with:
                   if-no-files-found: error
-                  name: ${{ inputs.artifact-name }}
+                  name: build-output
                   path: ${{ inputs.artifact-path }}
