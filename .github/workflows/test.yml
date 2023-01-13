@@ -13,10 +13,6 @@ on:
                 description: Executable command script to run tests
                 required: true
                 type: string
-            type-name:
-                description: Type of the tests (ie. unit)
-                required: false
-                type: string
             with-coverage:
                 description: Run coverage analytics with Coveralls?
                 default: false
@@ -32,7 +28,6 @@ env:
 
 jobs:
     test:
-        name: Test / ${{ inputs.type-name }}
         runs-on: ${{ matrix.os }}
         timeout-minutes: 3
         strategy:
