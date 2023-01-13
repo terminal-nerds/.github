@@ -21,6 +21,10 @@ defaults:
 
 env:
     CI: true
+    # Prevent possible memory leaks by setting limit
+    # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    NODE_OPTIONS: --max-old-space-size=6144
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
     test:
@@ -34,9 +38,9 @@ jobs:
             - name: Checkout to ${{ github.repository }} repository
               # https://github.com/actions/checkout
               uses: actions/checkout@v3
-              with:
-                  fetch-depth: 0
-                  ref: ${{ github.head_ref }}
+              # with:
+                  # fetch-depth: 0
+                  # ref: ${{ github.head_ref }}
 
             - name: Setup the latest pnpm version
               # https://github.com/pnpm/action-setup
@@ -63,4 +67,4 @@ jobs:
               # https://github.com/coverallsapp/github-action
               uses: coverallsapp/github-action@master
               with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  github-token: ${{ env.GITHUB_TOKEN }}
