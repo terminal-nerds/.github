@@ -5,10 +5,6 @@ name: Test
 on:
     workflow_call:
         inputs:
-            github-token:
-                description: GitHub token to be passed down to Coveralls
-                required: true
-                type: string
             script-test:
                 description: Executable command script to run tests
                 required: true
@@ -67,4 +63,4 @@ jobs:
               # https://github.com/coverallsapp/github-action
               uses: coverallsapp/github-action@master
               with:
-                  github-token: ${{ inputs.GITHUB_TOKEN }}
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
