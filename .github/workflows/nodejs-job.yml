@@ -1,17 +1,18 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 ---
-name: Node.js job
+name: Execute Node.js job
 
 on:
     workflow_call:
         inputs:
             download-build:
+                default: false
                 description: Download built output from the workflow artifacts
                 required: false
                 type: boolean
 
             step-name:
-                description: Name of the step for better log display
+                description: Name of the step for a better understanding of the logs
                 required: true
                 type: string
 
@@ -31,44 +32,15 @@ env:
     NODE_OPTIONS: --max-old-space-size=6144
 
 jobs:
-    nodejs_job:
-        name: Node.js job
+    execute-nodejs-job:
+        name: Execute Node.js job
         runs-on: ubuntu-latest
+        timeout-minutes: 3
         steps:
-            - name: Checkout to ${{ github.repository }} repository
-              # https://github.com/actions/checkout
-              uses: actions/checkout@v3
+            # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
+            - uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
               with:
-                  fetch-depth: 0
-                  ref: ${{ github.head_ref }}
-
-            - name: Setup the latest pnpm version
-              # https://github.com/pnpm/action-setup
-              uses: pnpm/action-setup@v2
-              with:
-                  version: latest
-
-            - name: Setup the latest Node.js LTS version
-              # https://github.com/actions/setup-node
-              uses: actions/setup-node@v3
-              with:
-                  cache: pnpm
-                  node-version: lts/*
-
-            - name: Install dependencies
-              # https://pnpm.io/cli/install
-              run: pnpm install --frozen-lockfile
-
-            - name: Download built output
-              # https://github.com/actions/download-artifact
-              uses: actions/download-artifact@v3
-              if: ${{ inputs.download-build }}
-
-            - name: Extract built output
-              if: ${{ inputs.download-build }}
-              # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-built-packages.sh
-              run: curl https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-built-packages.sh | sh
+                  download-build: ${{ inputs.download-build }}
 
             - name: ${{ inputs.step-name }}
               run: ${{ inputs.run }}
-        timeout-minutes: 5

@@ -35,29 +35,8 @@ jobs:
                 OS: [ubuntu-latest]
             fail-fast: true
         steps:
-            - name: Checkout to ${{ github.repository }} repository
-              # https://github.com/actions/checkout
-              uses: actions/checkout@v3
-              # with:
-                  # fetch-depth: 0
-                  # ref: ${{ github.head_ref }}
-
-            - name: Setup the latest pnpm version
-              # https://github.com/pnpm/action-setup
-              uses: pnpm/action-setup@v2
-              with:
-                  version: latest
-
-            - name: Setup the latest Node.js LTS version
-              # https://github.com/actions/setup-node
-              uses: actions/setup-node@v3
-              with:
-                  cache: pnpm
-                  node-version: lts/*
-
-            - name: Install dependencies
-              # https://pnpm.io/cli/install
-              run: pnpm install --frozen-lockfile
+            # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
+            - uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
 
             - name: Execute the script for the tests
               run: ${{ inputs.script-test }}

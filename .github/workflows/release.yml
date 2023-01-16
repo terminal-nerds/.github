@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 ---
-name: Changesets
+name: Release / Changesets
 
 on:
     workflow_call:
@@ -22,47 +22,19 @@ env:
     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 jobs:
-    changesets:
-        name: Changesets
+    release:
+        name: Release / Changesets
         if: ${{
             github.ref_name == 'main' &&
             github.repository_owner == 'terminal-nerds'
             }}
         runs-on: ubuntu-latest
+        timeout-minutes: 3
         steps:
-            - name: Checkout to ${{ github.repository }} repository
-              # https://github.com/actions/checkout
-              uses: actions/checkout@v3
+            # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
+            - uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
               with:
-                  fetch-depth: 0
-                  ref: ${{ github.head_ref }}
-
-            - name: Setup the latest pnpm version
-              # https://github.com/pnpm/action-setup
-              uses: pnpm/action-setup@v2
-              with:
-                  version: latest
-
-            - name: Setup the latest Node.js LTS version
-              # https://github.com/actions/setup-node
-              uses: actions/setup-node@v3
-              with:
-                  cache: pnpm
-                  node-version: lts/*
-
-            - name: Install dependencies
-              # https://pnpm.io/cli/install
-              run: pnpm install --frozen-lockfile
-
-            - name: Download built output
-              # https://github.com/actions/download-artifact
-              uses: actions/download-artifact@v3
-
-            - name: Extract built output
-              # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-built-packages.sh
-              run: >
-                  curl https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-built-packages.sh
-                  | sh
+                  download-build: true
 
             - name: Create changelogs, release, publish with Changesets
               # https://github.com/changesets/action
@@ -73,4 +45,3 @@ jobs:
                   publish: pnpm changeset publish
                   title: "chore(Changesets): 🎉 Release package(s)"
                   version: pnpm changeset version
-        timeout-minutes: 5
