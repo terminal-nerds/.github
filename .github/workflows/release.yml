@@ -23,7 +23,7 @@ env:
 
 jobs:
     release:
-        name: Release / Changesets
+        name: Changesets
         if: ${{
             github.ref_name == 'main' &&
             github.repository_owner == 'terminal-nerds'
@@ -31,8 +31,9 @@ jobs:
         runs-on: ubuntu-latest
         timeout-minutes: 3
         steps:
-            # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
-            - uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+            - name: Setup Node.js with pnpm
+              # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
+              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
               with:
                   download-build: true
 

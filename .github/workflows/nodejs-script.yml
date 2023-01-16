@@ -38,7 +38,7 @@ env:
 
 jobs:
     nodejs-script:
-        name: Run ${{ inputs.job-name }}
+        name: ${{ inputs.job-name }}
         runs-on: ubuntu-latest
         timeout-minutes: 3
         steps:

@@ -41,7 +41,7 @@ on:
 
 jobs:
     build-job:
-        name: Build job
+        name: Build with compression report
         runs-on: ${{ matrix.os }}
         timeout-minutes: 3
         strategy:

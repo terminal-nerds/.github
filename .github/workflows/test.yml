@@ -5,10 +5,16 @@ name: Test
 on:
     workflow_call:
         inputs:
+            job-name:
+                description: Name of the job
+                required: true
+                type: string
+
             script-test:
                 description: Executable command script to run tests
                 required: true
                 type: string
+
             with-coverage:
                 description: Run coverage analytics with Coveralls?
                 default: false
@@ -28,6 +34,7 @@ env:
 
 jobs:
     test:
+        name: ${{ inputs.job-name }}
         runs-on: ${{ matrix.os }}
         timeout-minutes: 3
         strategy:
@@ -36,7 +43,8 @@ jobs:
             fail-fast: true
         steps:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
-            - uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+            - name: Setup Node.js with pnpm
+              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
 
             - name: Execute the script for the tests
               run: ${{ inputs.script-test }}
