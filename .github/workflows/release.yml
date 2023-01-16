@@ -1,14 +1,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 ---
-name: Semantic Release
+name: Changesets
 
 on:
     workflow_call:
-        inputs:
-            script-release:
-                description: Package.json script to execute the `semantic-release`
-                required: true
-                type: string
         secrets:
             NPM_TOKEN:
                 description: Token for npmjs.com registry publishing
@@ -28,7 +23,7 @@ env:
 
 jobs:
     changesets:
-        name: Semantic Release
+        name: Changesets
         if: ${{
             github.ref_name == 'main' &&
             github.repository_owner == 'terminal-nerds'
@@ -69,6 +64,13 @@ jobs:
                   curl https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-built-packages.sh
                   | sh
 
-            - name: Create changelogs, release, publish with Semantic Release
-              run: ${{ inputs.script-release }}
+            - name: Create changelogs, release, publish with Changesets
+              # https://github.com/changesets/action
+              uses: changesets/action@v1
+              id: changesets
+              with:
+                  commit: "chore(Changesets): 🏷️ Versioning package(s)"
+                  publish: pnpm changeset publish
+                  title: "chore(Changesets): 🎉 Release package(s)"
+                  version: pnpm changeset version
         timeout-minutes: 5
