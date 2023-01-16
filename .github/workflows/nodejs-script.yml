@@ -1,6 +1,5 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 ---
-name: Execute Node.js job
 
 on:
     workflow_call:
@@ -11,6 +10,11 @@ on:
                 required: false
                 type: boolean
 
+            job-name:
+                description: Name of the job
+                required: true
+                type: string
+
             step-name:
                 description: Name of the step for a better understanding of the logs
                 required: true
@@ -20,6 +24,8 @@ on:
                 description: Command to execute
                 required: true
                 type: string
+
+name: ${{ inputs.job-name }}
 
 defaults:
     run:
@@ -32,13 +38,14 @@ env:
     NODE_OPTIONS: --max-old-space-size=6144
 
 jobs:
-    execute-nodejs-job:
-        name: Execute Node.js job
+    nodejs-script:
+        name: Run Node.js script
         runs-on: ubuntu-latest
         timeout-minutes: 3
         steps:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
-            - uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+            - name: Setup Node.js with pnpm
+              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
               with:
                   download-build: ${{ inputs.download-build }}
 
