@@ -50,9 +50,10 @@ jobs:
             fail-fast: true
         steps:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
-            - uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+            - name: Setup Node.js with pnpm
+              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
               with:
-                  skip-install-dependencies: true
+                  skip-installing-dependencies: true
 
             - name: Execute build task with compression report
               # https://github.com/preactjs/compressed-size-action
