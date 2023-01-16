@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 ---
+name: Run Node.js script
 
 on:
     workflow_call:
@@ -25,8 +26,6 @@ on:
                 required: true
                 type: string
 
-name: ${{ inputs.job-name }}
-
 defaults:
     run:
         shell: bash
@@ -39,7 +38,7 @@ env:
 
 jobs:
     nodejs-script:
-        name: Run Node.js script
+        name: Run ${{ inputs.job-name }}
         runs-on: ubuntu-latest
         timeout-minutes: 3
         steps:
