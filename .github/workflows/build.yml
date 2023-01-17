@@ -41,7 +41,7 @@ on:
 
 jobs:
     build-job:
-        name: Build with compression report
+        name: With compression report
         runs-on: ${{ matrix.os }}
         timeout-minutes: 3
         strategy:
@@ -49,11 +49,9 @@ jobs:
                 OS: [ubuntu-latest]
             fail-fast: true
         steps:
-            # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
+            # https://github.com/terminal-nerds/setup-nodejs-with-pnpm-action
             - name: Setup Node.js with pnpm
               uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
-              with:
-                  skip-installing-dependencies: true
 
             - name: Execute build task with compression report
               # https://github.com/preactjs/compressed-size-action

@@ -46,7 +46,7 @@ jobs:
             - name: Setup Node.js with pnpm
               uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
               with:
-                  download-build: ${{ inputs.download-build }}
+                  download-build: ${{ inputs.download-build && 'true' || 'false' }}
 
             - name: ${{ inputs.step-name }}
               run: ${{ inputs.run }}

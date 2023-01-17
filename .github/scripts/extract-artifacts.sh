@@ -2,12 +2,12 @@
 
 readonly ARTIFACT_DIRECTORY="build-output"
 readonly TEMPORARY_DIRECTORY=".temporary"
-readonly OUTPUT_DIRECTORY="packages"
+# readonly OUTPUT_DIRECTORY="packages"
 readonly WRAPPED_DIRECTORY="packed"
 
 cd "$ARTIFACT_DIRECTORY" || exit 1
-mkdir -p "../$TEMPORARY_DIRECTORY/$OUTPUT_DIRECTORY"
-mv ./* "../$TEMPORARY_DIRECTORY/$OUTPUT_DIRECTORY"
+mkdir -p "../$TEMPORARY_DIRECTORY"
+mv ./* "../$TEMPORARY_DIRECTORY"
 
 cd "../$TEMPORARY_DIRECTORY" || exit 1
 tar -cvzpf "$WRAPPED_DIRECTORY.tar.gz" ./*
