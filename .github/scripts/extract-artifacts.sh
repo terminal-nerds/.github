@@ -2,20 +2,38 @@
 
 readonly ARTIFACT_DIRECTORY="build-output"
 readonly TEMPORARY_DIRECTORY=".temporary"
-# readonly OUTPUT_DIRECTORY="packages"
-readonly WRAPPED_DIRECTORY="packed"
+readonly COMPRESSED_DIRECTORY="compressed"
+readonly COMPRESSED_FILE="$COMPRESSED_DIRECTORY.tar.gz"
 
 cd "$ARTIFACT_DIRECTORY" || exit 1
-mkdir -p "../$TEMPORARY_DIRECTORY"
+echo "- Changed current working directory to: $ARTIFACT_DIRECTORY"
+
+mkdir --parents "../$TEMPORARY_DIRECTORY"
+echo "- Created a temporary directory at: ../$TEMPORARY_DIRECTORY"
+
 mv ./* "../$TEMPORARY_DIRECTORY"
+echo "- Moved all of the content from: $ARTIFACT_DIRECTORY ..."
+echo "... to a temporary directory at: $TEMPORARY_DIRECTORY"
 
 cd "../$TEMPORARY_DIRECTORY" || exit 1
-tar -cvzpf "$WRAPPED_DIRECTORY.tar.gz" ./*
-mv "$WRAPPED_DIRECTORY.tar.gz" "../$WRAPPED_DIRECTORY.tar.gz"
+echo "- Changed current working directory to temporary one: $TEMPORARY_DIRECTORY"
+
+echo "- Compressing the content of current working directory to: $COMPRESSED_FILE ..."
+tar --create --verbose --gzip --preserve-permissions --file "$COMPRESSED_FILE" ./*
+echo "... Compression finished."
+
+mv "$COMPRESSED_FILE" "../$COMPRESSED_FILE"
+echo "- Moved $COMPRESSED_FILE to parent directory: ../$COMPRESSED_FILE"
 
 cd ..
-tar -xvzpf "$WRAPPED_DIRECTORY.tar.gz"
+echo "- Changed the current working directory to parent one: ../"
 
-rm -rf "$WRAPPED_DIRECTORY"
+echo "- Decompressing the file: $COMPRESSED_FILE ..."
+tar --extract --gzip --preserve-permissions --file "$COMPRESSED_FILE"
+echo "... Decompression finished.: $COMPRESSED_FILE"
+
 rm -rf "$TEMPORARY_DIRECTORY"
-rm -f "$WRAPPED_DIRECTORY.tar.gz"
+echo "- Removed the temporary directory: $TEMPORARY_DIRECTORY"
+
+rm -f "$COMPRESSED_FILE"
+echo "- Removed the compressed file: $COMPRESSED_FILE"
