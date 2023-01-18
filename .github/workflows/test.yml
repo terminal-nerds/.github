@@ -21,6 +21,11 @@ on:
                 required: false
                 type: boolean
 
+        secrets:
+            CC_TEST_REPORTER_ID:
+                description: CodeClimate Quality test reporter ID for the coverage reports
+                required: false
+
 defaults:
     run:
         shell: bash
@@ -55,3 +60,13 @@ jobs:
               uses: coverallsapp/github-action@master
               with:
                   github-token: ${{ env.GITHUB_TOKEN }}
+
+            - name: Publish results to CodeClimate Quality
+              if: inputs.with-coverage
+              # https://github.com/paambaati/codeclimate-action
+              env:
+                  CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+              uses: paambaati/codeclimate-action@v3.2.0
+              with:
+                  coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
+                  debug: true
