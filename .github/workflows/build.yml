@@ -39,6 +39,19 @@ on:
                 required: true
                 type: string
 
+        secrets:
+            TURBO_API:
+                description: Turbo API to connect for its remote caching
+                required: false
+            TURBO_TEAM:
+                description: Turbo team name in the API to connect for its remote caching
+                required: false
+            TURBO_TOKEN:
+                description: Turbo API token to connect for its remote caching
+                required: false
+            TURBO_REMOTE_CACHE_SIGNATURE_KEY:
+                description: Turbo remote caching signature key
+                required: false
 jobs:
     build-job:
         name: With compression report
@@ -48,6 +61,11 @@ jobs:
             matrix:
                 OS: [ubuntu-latest]
             fail-fast: true
+        env:
+            TURBO_API: ${{ secrets.TURBO_API }}
+            TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
         steps:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm-action
             - name: Setup Node.js with pnpm
@@ -66,6 +84,7 @@ jobs:
               # https://github.com/actions/upload-artifact
               uses: actions/upload-artifact@v3
               if: ${{ inputs.artifact-upload }}
+
               with:
                   if-no-files-found: error
                   name: build-output
