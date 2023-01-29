@@ -12,6 +12,10 @@ env:
     # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
     NODE_OPTIONS: --max-old-space-size=6144
 
+# Remove default permissions of `GITHUB_TOKEN` for security reasons
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions: {}
+
 on:
     workflow_call:
         inputs:
@@ -64,7 +68,7 @@ jobs:
         env:
             TURBO_API: ${{ secrets.TURBO_API }}
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}:q
             TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
         steps:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm-action

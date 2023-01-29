@@ -2,15 +2,19 @@
 ---
 name: Pull Request Labels
 
-on:
-    workflow_call:
-
 defaults:
     run:
         shell: bash
 
 env:
     CI: true
+
+on:
+    workflow_call:
+
+# Remove default permissions of `GITHUB_TOKEN` for security reasons
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions: {}
 
 jobs:
     pull-request-labels:

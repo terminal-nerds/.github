@@ -21,6 +21,10 @@ env:
     NODE_OPTIONS: --max-old-space-size=6144
     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+# Remove default permissions of `GITHUB_TOKEN` for security reasons
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions: {}
+
 jobs:
     release:
         name: Changesets
