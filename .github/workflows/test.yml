@@ -54,6 +54,8 @@ jobs:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
             - name: Setup Node.js with pnpm
               uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+              with:
+                  download-build: true
 
             - name: Execute the script for the tests
               run: ${{ inputs.script-test }}
