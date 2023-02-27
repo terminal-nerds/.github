@@ -60,11 +60,10 @@ jobs:
               # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-artifacts.sh
               shell: bash
               run: >
-                  env ARTIFACT_DIRECTORY="tests-coverage"
                   curl
                   --request GET
                   https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-artifacts.sh
-                  | sh
+                  | bash -s tests-coverage
 
             - name: Scan the codebase with SonarCloud
               # https://github.com/SonarSource/sonarcloud-github-action
