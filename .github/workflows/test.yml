@@ -15,20 +15,11 @@ on:
                 required: true
                 type: string
 
-            with-coverage:
-                description: Run coverage analytics with Coveralls?
+            upload-coverage:
+                description: Upload tests coverage results
                 default: false
                 required: false
                 type: boolean
-
-        secrets:
-            CC_TEST_REPORTER_ID:
-                description: CodeClimate Quality test reporter ID for the coverage reports
-                required: false
-
-            SONAR_TOKEN:
-                description: API key for the SonarCloud
-                required: true
 
 defaults:
     run:
@@ -64,25 +55,11 @@ jobs:
             - name: Execute the script for the tests
               run: ${{ inputs.script-test }}
 
-            - name: Scan the codebase with SonarCloud
-              # https://github.com/SonarSource/sonarcloud-github-action
-              uses: SonarSource/sonarcloud-github-action@master
-              env:
-                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-            - name: Analyze the tests coverage report with Coveralls
-              if: inputs.with-coverage
-              # https://github.com/coverallsapp/github-action
-              uses: coverallsapp/github-action@master
+            - name: Upload built output to GitHub Actions workflow artifacts
+              # https://github.com/actions/upload-artifact
+              uses: actions/upload-artifact@v3
+              if: inputs.upload-coverage
               with:
-                  github-token: ${{ env.GITHUB_TOKEN }}
-
-            - name: Publish results to CodeClimate Quality
-              if: inputs.with-coverage
-              # https://github.com/paambaati/codeclimate-action
-              env:
-                  CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-              uses: paambaati/codeclimate-action@v3.2.0
-              with:
-                  coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
-                  debug: true
+                  if-no-files-found: error
+                  name: tests-coverage
+                  path: ./coverage/

@@ -88,7 +88,6 @@ jobs:
               # https://github.com/actions/upload-artifact
               uses: actions/upload-artifact@v3
               if: ${{ inputs.artifact-upload }}
-
               with:
                   if-no-files-found: error
                   name: build-output

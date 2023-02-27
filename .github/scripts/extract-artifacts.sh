@@ -1,6 +1,7 @@
 #!/bin/bash
 
-readonly ARTIFACT_DIRECTORY="build-output"
+# NOTE: This variable below needs to be pased as env variable
+# readonly ARTIFACT_DIRECTORY="build-output"
 readonly TEMPORARY_DIRECTORY=".temporary"
 readonly COMPRESSED_DIRECTORY="compressed"
 readonly COMPRESSED_FILE="$COMPRESSED_DIRECTORY.tar.gz"

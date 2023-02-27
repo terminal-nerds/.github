@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+---
+name: Coverage
+
+on:
+    workflow_call:
+        secrets:
+            CC_TEST_REPORTER_ID:
+                description: CodeClimate Quality test reporter ID for the coverage reports
+                required: false
+
+defaults:
+    run:
+        shell: bash
+
+env:
+    CI: true
+    # Prevent possible memory leaks by setting limit
+    # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    NODE_OPTIONS: --max-old-space-size=6144
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+# Remove default permissions of `GITHUB_TOKEN` for security reasons
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions: {}
+
+jobs:
+    coverage:
+        name: Coveralls & CodeClimate
+        runs-on: ${{ matrix.os }}
+        timeout-minutes: 3
+        strategy:
+            matrix:
+                OS: [ubuntu-latest]
+            fail-fast: true
+        steps:
+            - name: Checkout to ${{ github.repository }} repository
+              # https://github.com/actions/checkout
+              uses: actions/checkout@v3
+
+            - name: Download tests coverage results from artifacts
+              # https://github.com/actions/download-artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: tests-coverage
+
+            - name: Extract tests coverage results from downloaded artifact
+              # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-artifacts.sh
+              shell: bash
+              run: >
+                  curl
+                  --request GET
+                  https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-artifacts.sh
+                  | sh
+
+            - name: Analyze the tests coverage report with Coveralls
+              if: inputs.with-coverage
+              # https://github.com/coverallsapp/github-action
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ env.GITHUB_TOKEN }}
+
+            - name: Publish results to CodeClimate Quality
+              # https://github.com/paambaati/codeclimate-action
+              env:
+                  CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+              uses: paambaati/codeclimate-action@v3.2.0
+              with:
+                  coverageLocations: ${{ github.workspace }}/coverage/lcov.info:lcov
+                  debug: true

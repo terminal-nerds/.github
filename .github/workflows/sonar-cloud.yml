@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+---
+name: Scan the codebase with SonarCloud
+
+defaults:
+    run:
+        shell: bash
+
+env:
+    CI: true
+    # Prevent possible memory leaks by setting limit
+    # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    NODE_OPTIONS: --max-old-space-size=6144
+
+# Remove default permissions of `GITHUB_TOKEN` for security reasons
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions: {}
+
+on:
+    workflow_call:
+        inputs:
+            sonar-project-key:
+                description: Project key for the SonarCloud scanning
+                required: true
+                type: string
+
+        secrets:
+            SONAR_TOKEN:
+                description: API key for the SonarCloud
+                required: true
+
+jobs:
+    scan:
+        name: SonarCloud
+        runs-on: ${{ matrix.os }}
+        timeout-minutes: 3
+        strategy:
+            matrix:
+                OS: [ubuntu-latest]
+            fail-fast: true
+        steps:
+            - name: Checkout to ${{ github.repository }} repository
+              # https://github.com/actions/checkout
+              uses: actions/checkout@v3
+
+            # TODO: Check if we need to setup Node.js, pnpm and download build
+            # # https://github.com/terminal-nerds/setup-nodejs-with-pnpm-action
+            # - name: Setup Node.js with pnpm
+            #   uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+            #   with:
+            #       download-build: true
+
+            - name: Download tests coverage results from artifacts
+              # https://github.com/actions/download-artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: tests-coverage
+
+            - name: Extract tests coverage results from downloaded artifact
+              # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-artifacts.sh
+              shell: bash
+              run: >
+                  env ARTIFACT_DIRECTORY="tests-coverage"
+                  curl
+                  --request GET
+                  https://raw.githubusercontent.com/terminal-nerds/.github/main/.github/scripts/extract-artifacts.sh
+                  | sh
+
+            - name: Scan the codebase with SonarCloud
+              # https://github.com/SonarSource/sonarcloud-github-action
+              uses: SonarSource/sonarcloud-github-action@master
+              env:
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+              with:
+                  args: >
+                      -Dsonar.organization=terminal-nerds
+                      -Dsonar.projectKey=${{ inputs.sonar-project-key }}
+                      -Dsonar.verbose=true
