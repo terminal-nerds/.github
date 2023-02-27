@@ -62,4 +62,6 @@ jobs:
               with:
                   if-no-files-found: error
                   name: tests-coverage
-                  path: ./coverage/
+                  path: |
+                      ./coverage/lcov.info
+                      ./coverage/coverage-final.json
