@@ -43,19 +43,11 @@ jobs:
               # https://github.com/actions/checkout
               uses: actions/checkout@v3
 
-            # TODO: Check if we need to setup Node.js, pnpm and download build
-            # # https://github.com/terminal-nerds/setup-nodejs-with-pnpm-action
-            # - name: Setup Node.js with pnpm
-            #   uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
-            #   with:
-            #       download-build: true
-
             - name: Download tests coverage results from artifacts
               # https://github.com/actions/download-artifact
               uses: actions/download-artifact@v3
               with:
                   name: tests-coverage
-                  # TODO: Check if extraction succeed
                   path: tests-coverage
 
             - name: Extract tests coverage results from downloaded artifact
