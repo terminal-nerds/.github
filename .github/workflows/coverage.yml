@@ -43,6 +43,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: tests-coverage
+                  path: tests-coverage
 
             - name: Extract tests coverage results from downloaded artifact
               # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-artifacts.sh

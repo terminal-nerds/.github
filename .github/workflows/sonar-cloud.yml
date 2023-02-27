@@ -55,6 +55,8 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: tests-coverage
+                  # TODO: Check if extraction succeed
+                  path: tests-coverage
 
             - name: Extract tests coverage results from downloaded artifact
               # https://github.com/terminal-nerds/.github/blob/main/.github/scripts/extract-artifacts.sh
