@@ -60,6 +60,12 @@ jobs:
             - name: Execute the script for the tests
               run: ${{ inputs.script-test }}
 
+            - name: Scan the codebase with SonarCloud
+              # https://github.com/SonarSource/sonarcloud-github-action
+              uses: SonarSource/sonarcloud-github-action@master
+              env:
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
             - name: Analyze the tests coverage report with Coveralls
               if: inputs.with-coverage
               # https://github.com/coverallsapp/github-action
