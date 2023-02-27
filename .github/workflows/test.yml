@@ -26,6 +26,10 @@ on:
                 description: CodeClimate Quality test reporter ID for the coverage reports
                 required: false
 
+            SONAR_TOKEN:
+                description: API key for the SonarCloud
+                required: true
+
 defaults:
     run:
         shell: bash
