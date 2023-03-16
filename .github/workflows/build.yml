@@ -69,7 +69,7 @@ jobs:
         env:
             TURBO_API: ${{ secrets.TURBO_API }}
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}:q
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
         steps:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm-action
