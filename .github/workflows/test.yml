@@ -48,7 +48,7 @@ jobs:
         steps:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm
             - name: Setup Node.js with pnpm
-              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1.1.1
               with:
                   download-build: true
 

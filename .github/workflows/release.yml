@@ -40,7 +40,7 @@ jobs:
         steps:
             - name: Setup Node.js with pnpm
               # https://github.com/terminal-nerds/setup-nodejs-with-pnpm-action
-              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1.1.1
               with:
                   download-build: true
 

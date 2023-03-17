@@ -74,7 +74,7 @@ jobs:
         steps:
             # https://github.com/terminal-nerds/setup-nodejs-with-pnpm-action
             - name: Setup Node.js with pnpm
-              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1
+              uses: terminal-nerds/setup-nodejs-with-pnpm-action@v1.1.1
 
             - name: Execute build task with compression report
               # https://github.com/preactjs/compressed-size-action
