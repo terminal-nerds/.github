@@ -40,11 +40,11 @@ this project.
 are using these. If you use any other major versions, we can't guarantee that
 they will not break anything, thus working correctly 100%.
 
-| Tool                               | version                        |
-| ---------------------------------- | ------------------------------ |
-| [![Git icon]][git] Git             | 2.x                            |
-| [![Node.js icon]][node.js] Node.js | LTS (Long Term Support) - 16.x |
-| [![pnpm icon]][pnpm] pnpm          | 6.x                            |
+| Tool                               | version                 |
+| ---------------------------------- | ----------------------- |
+| [![Git icon]][git] Git             | 2.x                     |
+| [![Node.js icon]][node.js] Node.js | LTS (Long Term Support) |
+| [![pnpm icon]][pnpm] pnpm          | latest stable           |
 
 [git]: https://git-scm.com/
 [git icon]: https://api.iconify.design/logos/git-icon.svg
@@ -68,4 +68,3 @@ While contributing, please remember this part from the intro:
 ---
 
 🙏 You made an effort to reach the bottom of this page. **Thank you for reading!**
-

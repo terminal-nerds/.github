@@ -1,0 +1,5 @@
+{
+	"ignore-bin-package": false,
+	"ignores": ["@terminal-nerds/*", "prettier"],
+	"skip-missing": false
+}

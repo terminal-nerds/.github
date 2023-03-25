@@ -15,7 +15,6 @@
 <!-- -   Other: ... -->
 
 <!-- Additional info below this line. You can delete it, if unneccessary. -->
----
 
 ## Resolves
 

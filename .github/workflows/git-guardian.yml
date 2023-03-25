@@ -43,5 +43,5 @@ jobs:
                   GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
               with:
                   args: >
-                    --all-policies
-                    --verbose
+                      --all-policies
+                      --verbose
