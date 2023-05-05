@@ -8,6 +8,7 @@
 	"dependencyDashboard": true,
 	"extends": ["config:base"],
 	"labels": ["🧩 dependencies"],
+	"prConcurrentLimit": 0,
 	"reviewersFromCodeOwners": true,
 	"schedule": ["after 10pm and before 5am every weekday", "every sunday"],
 	"stabilityDays": 3,
